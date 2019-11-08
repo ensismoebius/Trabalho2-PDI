@@ -1,4 +1,4 @@
-function doFft2AndShow(image)
+function runExample(image)
 	%% Generate masked image
 	[maskedRgbImage, mask] = generateMaskedImage(image);
 
