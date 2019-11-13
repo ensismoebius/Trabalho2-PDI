@@ -1,6 +1,6 @@
 function [maskedRgbImage, mask] = generateMaskedImage(image)
 	%% Apply low and high pass filters
-	[originalGrayed, blurred] = applyLowOrHighPass(image, 5, 0);
+	[originalGrayed, blurred] = applyLowOrHighPass(image, 50, 0);
 	[~, hiFreqImage] = applyLowOrHighPass(image, 1, 1);
 	
 	%% Creating image mask
@@ -10,13 +10,18 @@ function [maskedRgbImage, mask] = generateMaskedImage(image)
 	maskedRgbImage = bsxfun(@times, image, cast(mask, 'like', image));
 	[rows, columns]= size(maskedRgbImage);
     
-    for i=1: rows
-       for j=1: columns
-          if maskedRgbImage(i,j)==0
-            maskedRgbImage(i,j)= 255;
-          end
-       end
-    end
+    disp('Filtrando Imagens...');
+        %ch1= maskedRgbImage(:, :, 1); ch2= maskedRgbImage(:, :, 2); ch3= maskedRgbImage(:, :, 3);
+        %black_pixels= ch1==0 & ch2==0 &ch3==0;
+        %ch1(black_pixels)= 255; ch2(black_pixels)= 255; ch3(black_pixels)= 255; 
+        %maskedRgbImage= cat(3, ch1, ch2, ch3);
+    %for i=1: rows
+     %  for j=1: columns
+        %  if maskedRgbImage(i,j)==0
+        %    maskedRgbImage(i,j)= 255;
+        %  end
+      % end
+    %end
 	%% Subroutines definitions
 	function [mask] = generateMask(hiFreqImage, blurred)
 			imSubtration = hiFreqImage - blurred;

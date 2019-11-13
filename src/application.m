@@ -2,16 +2,15 @@
 maligna_images= image_reader('D:\Hiago\Acadêmico\PÓS GRADUAÇÃO\Disciplinas\2º SEMESTRE - 2019\Processamento de Imagens Digitais\Trabalhos\Aplicação (Artigo)\Roi_Recort_bisque_Maligna');
 benigna_images= image_reader('D:\Hiago\Acadêmico\PÓS GRADUAÇÃO\Disciplinas\2º SEMESTRE - 2019\Processamento de Imagens Digitais\Trabalhos\Aplicação (Artigo)\Roi_Recort_bisque_Benigna');
 
-%put filter here
-%teste_img= generateMaskedImage(benigna_images{1});
-%figure(10); imshow(teste_img); title('teste');
+%filtering a part of the images (choose % of the total)
+maligna_images= filtering_images(maligna_images, 1);
+benigna_images= filtering_images(benigna_images, 1);
 
 %here I have two groups for comparison - GRAY SCALE ORIGINAL IMAGES and SEGMENTED IMAGES (is segmentation necessary?)
 gray_maligna_images= cell(1, length(maligna_images)); segmented_maligna_images= cell(1, length(maligna_images));
 gray_benigna_images= cell(1, length(benigna_images)); segmented_benigna_images= cell(1, length(benigna_images));
 for i=1: length(benigna_images)
     if i<25
-       % gray_maligna_images{i}= generateMaskedImage(gray_maligna_images{i});
        gray_maligna_images{i}= rgb2gray(maligna_images{i});
        segmented_maligna_images{i}= imsubtract(gray_maligna_images{i}, uint8(imbinarize(gray_maligna_images{i})));
     end
@@ -55,7 +54,7 @@ for x=1: length(feature_matrix)
 end    
 
 %do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes');
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis');
 disp('FINALIZADO - RESULTADOS----------------------------------------------');
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
