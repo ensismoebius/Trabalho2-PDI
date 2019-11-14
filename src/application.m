@@ -2,7 +2,7 @@
 maligna_images= image_reader('D:\Hiago\Acadêmico\PÓS GRADUAÇÃO\Disciplinas\2º SEMESTRE - 2019\Processamento de Imagens Digitais\Trabalhos\Aplicação (Artigo)\Roi_Recort_bisque_Maligna');
 benigna_images= image_reader('D:\Hiago\Acadêmico\PÓS GRADUAÇÃO\Disciplinas\2º SEMESTRE - 2019\Processamento de Imagens Digitais\Trabalhos\Aplicação (Artigo)\Roi_Recort_bisque_Benigna');
 
-%filtering a part of the images (choose % of the total)
+%filtering the images (choose % of the total) -- 1 == all images
 maligna_images= filtering_images(maligna_images, 1);
 benigna_images= filtering_images(benigna_images, 1);
 
@@ -27,12 +27,12 @@ feature_matrix= zeros(length(maligna_images)+length(benigna_images), length(form
 [rows, columns]= size(feature_matrix); idx_bng=1;
 for i=1: rows
     if i < (length(maligna_images)+1) %here I can choose if I want to extract from original gray images or segmented ones
-        feature_vector= feature_extractor(gray_maligna_images{i});
+        feature_vector= feature_extractor(segmented_maligna_images{i});
         formatted_feature_vector= cell2mat(feature_vector); 
         feature_matrix(i, 1:length(feature_matrix))= formatted_feature_vector;
         label_matrix{i}= 'maligna';
     else
-        feature_vector= feature_extractor(gray_benigna_images{idx_bng});
+        feature_vector= feature_extractor(segmented_benigna_images{idx_bng});
         formatted_feature_vector= cell2mat(feature_vector); 
         feature_matrix(i, 1:length(feature_matrix))= formatted_feature_vector;
         idx_bng= idx_bng+1;
@@ -43,7 +43,7 @@ end
 %calling RELIEF for ranking the most important descriptors
 [rank, weights]= relieff(feature_matrix, label_matrix, 10);
 %selecting the first X better descriptors
-number_of_descriptors=10; 
+number_of_descriptors=30; 
 cutted_feature_matrix= zeros(rows, number_of_descriptors);
 idx_best_descriptors=1;
 for x=1: length(feature_matrix)

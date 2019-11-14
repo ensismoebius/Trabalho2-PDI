@@ -15,11 +15,11 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
        
        %here I am training the classifier 
        if strcmpi(classifier, 'discrim_analysis') 
-           trained_classifier= fitcdiscr(feature_vectors_matrix(idx_train, :), label_matrix(idx_train,:), 'ClassNames', {'maligna', 'benigna'});
+           trained_classifier= fitcdiscr(feature_vectors_matrix(idx_train, :), label_matrix(idx_train,:), 'ClassNames', {'maligna', 'benigna'}, 'discrimType', 'diagLinear');
        elseif strcmpi(classifier, 'decision_tree')
            trained_classifier= fitctree(feature_vectors_matrix(idx_train, :), label_matrix(idx_train,:), 'ClassNames', {'maligna', 'benigna'});
        elseif strcmpi(classifier, 'naive_bayes')
-           trained_classifier= fitcnb(feature_vectors_matrix(idx_train, :), label_matrix(idx_train,:), 'ClassNames', {'maligna', 'benigna'});
+           trained_classifier= fitcnb(feature_vectors_matrix(idx_train, :), label_matrix(idx_train,:), 'ClassNames', {'maligna', 'benigna'}, 'DistributionNames', 'kernel');
        else
            error('Classificador não disponível na função');
        end
