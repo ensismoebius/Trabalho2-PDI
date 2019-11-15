@@ -1,4 +1,4 @@
-function vector= feature_extractor(input_img) %this function receives an grayscale img as input and returns a feature vector
+function vector= feature_extractor(input_img) %this function receives a grayscale img as input and returns a feature vector
 
     %FIRST ORDER MEASURES
         vector{1}= mean2(input_img);  %average

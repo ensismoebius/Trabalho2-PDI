@@ -27,12 +27,12 @@ feature_matrix= zeros(length(maligna_images)+length(benigna_images), length(form
 [rows, columns]= size(feature_matrix); idx_bng=1;
 for i=1: rows
     if i < (length(maligna_images)+1) %here I can choose if I want to extract from original gray images or segmented ones
-        feature_vector= feature_extractor(segmented_maligna_images{i});
+        feature_vector= feature_extractor(segmented_maligna_images{i});% <-
         formatted_feature_vector= cell2mat(feature_vector); 
         feature_matrix(i, 1:length(feature_matrix))= formatted_feature_vector;
         label_matrix{i}= 'maligna';
     else
-        feature_vector= feature_extractor(segmented_benigna_images{idx_bng});
+        feature_vector= feature_extractor(segmented_benigna_images{idx_bng});% <-
         formatted_feature_vector= cell2mat(feature_vector); 
         feature_matrix(i, 1:length(feature_matrix))= formatted_feature_vector;
         idx_bng= idx_bng+1;
@@ -54,7 +54,7 @@ for x=1: length(feature_matrix)
 end    
 
 %do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis');
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree');
 disp('FINALIZADO - RESULTADOS----------------------------------------------');
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
