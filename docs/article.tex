@@ -57,7 +57,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 \title{Classification of Histopathological Images of Breast Cells between Malignant and Benign Tumors based on Handcrafted Feature Extraction}
-\author{André Furlan \& Hiago Matheus Brajato - UNESP - Universidade Estadual Paulista "Júlio de Mesquita Filho"}
+\author{Hiago Matheus Brajato \& André Furlan - UNESP - Universidade Estadual Paulista "Júlio de Mesquita Filho"}
 \date{2019-11-14}
 \maketitle
 
@@ -74,14 +74,14 @@ Breast Cancer is a kind of malignant tumor in which cells in the breast grow out
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=8cm]{Figuras/graphic1.png}
+    \includegraphics[width=8cm]{images/graphic1.png}
     \caption{Statistics about Incidence of types of Cancer in the World \cite{GLOBOCAN}}
     \label{fig:my_label}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=8cm]{Figuras/graphic2.png}
+    \includegraphics[width=8cm]{images/graphic2.png}
     \caption{Statistics about Incidence of types of Cancer in Brazil \cite{GLOBOCAN}}
     \label{fig:my_label}
 \end{figure}
@@ -94,13 +94,17 @@ The dataset used in this work is composed by 50 images of breast cells, being th
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=8cm]{Figuras/imagem3.png}
+    \includegraphics[width=8cm]{images/imagem3.png}
     \caption{Flowchart of the developed method}
     \label{fig:my_label}
 \end{figure}
 
 \section{Filtering: Frequency Domain}
-André: .........
+The main objective of this section is separate from the noisy background the interesting areas, so the classifiers do not need to evaluate irrelevant data.
+The main idea behind it is to subtract the low frequencies components from image and, using morphological operations, remove remaining noises and close the gaps.
+\subsection{Filtering}
+Two kinds of filters were used:\\
+A low pass filter witch is used do highlight the low frequencies features of the image.In this specific case, the radius used was 60 pixels.
 
 
 \section{Segmentation}
@@ -108,7 +112,7 @@ The segmentation is an important step within the image processing, which is resp
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=8cm]{Figuras/imagem_segmentacao.png}
+    \includegraphics[width=8cm]{images/imagem_segmentacao.png}
     \caption{Segmentation of an Image of Malignant Tumor}
     \label{fig:my_label}
 \end{figure}

@@ -10,33 +10,33 @@ function [maskedRgbImage, mask] = generateMaskedImage(image)
 	maskedRgbImage = bsxfun(@times, image, cast(mask, 'like', image));
 	[rows, columns]= size(maskedRgbImage);
     
-    disp('Filtrando Imagens...');
+	disp('Filtrando Imagens...');
         %ch1= maskedRgbImage(:, :, 1); ch2= maskedRgbImage(:, :, 2); ch3= maskedRgbImage(:, :, 3);
         %black_pixels= ch1==0 & ch2==0 &ch3==0;
         %ch1(black_pixels)= 255; ch2(black_pixels)= 255; ch3(black_pixels)= 255; 
         %maskedRgbImage= cat(3, ch1, ch2, ch3);
-    %for i=1: rows
-     %  for j=1: columns
-        %  if maskedRgbImage(i,j)==0
-        %    maskedRgbImage(i,j)= 255;
-        %  end
-      % end
-    %end
+	%for i=1: rows
+	%  for j=1: columns
+	%  if maskedRgbImage(i,j)==0
+	%    maskedRgbImage(i,j)= 255;
+	%  end
+	% end
+	%end
 	%% Subroutines definitions
 	function [mask] = generateMask(hiFreqImage, blurred)
-			imSubtration = hiFreqImage - blurred;
+		imSubtration = hiFreqImage - blurred;
+		
+		% Binarize with Otsu
+		binarized = imbinarize(imSubtration, graythresh(imSubtration));
 			
-			% Binarize with Otsu
-			binarized = imbinarize(imSubtration, graythresh(imSubtration));
-			
-			% Morphologiacal operations for noise removal
-			se = strel ('disk',3);
-			eroded = imerode(binarized,se);
-			se = strel('disk',5);
-			expanded = im2bw(imdilate(eroded, se), 0.5);
-			
-			% Morphological operations for holes removal
-			mask = imfill(expanded,'holes');
+		% Morphologiacal operations for noise removal
+		se = strel ('disk',3);
+		eroded = imerode(binarized,se);
+		se = strel('disk',5);
+		expanded = im2bw(imdilate(eroded, se), 0.5);
+		
+		% Morphological operations for holes removal
+		mask = imfill(expanded,'holes');
 	end
 	
 	function [result] = lowOrHighPass(image, radius, sizex, sizey, highpass)
