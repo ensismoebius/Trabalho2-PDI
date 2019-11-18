@@ -102,18 +102,21 @@ The dataset used in this work is composed by 50 images of breast cells, being th
 \section{Filtering: Frequency Domain}
 The main objective of this section is separate from the noisy background the interesting areas, so the classifiers do not need to evaluate irrelevant data.
 The main idea behind it is to subtract the low frequencies components from the image and, using morphological operations, remove remaining noises and close the gaps.
-\subsection{Filtering}
-	Two kinds of filters were used:\\
-	\par A low pass filter witch is used to highlight the low frequencies features of the image. In this specific case, the radius used was empirically determined to be 50 pixels.
+\subsection{Filtering and masking}
+	Two kinds of filters were used:
+	\par A low pass filter, witch is used to highlight the low frequencies features of the image, with radius of  empirically determined 50 pixels, and a high pass filter, to enhance the detailed information at the image, with  radius of one.
 	
-	\par And a high pass filter to enhance the detailed information at the image. The radius chosen this time is one.
+	\par To get the mask (figure \ref{fig:mask}) a simple subtraction operation of grayscaled lowpass filtered image from highpass filtered image is made and ,on the resulted image, Otsu thresholding operation is applied followed by three morphological operations: An erosion using a circle mask of three pixels, a dilation using a circle mask of five pixels and a hole filling; these values were empirically chosen to get rid of noisy information in the image and avoid to hide important features of the image.
 	
-	\par To get the mask a simple subtraction operation of grayscaled lowpass filtered image from highpass filtered image is made.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/mask}
+		\caption{Image mask generated}
+		\label{fig:mask}
+	\end{figure}
 
-	\par On the resulted image, Otsu thresholding
-	operation is applied followed by two morphological operations: An erosion using a circle mask of three pixels and dilation using a circle mask of 5 pixels, these values were empirically chosen to get rid of noisy information in the image.
-	
-	\par The original image, the mask, and the final masked image are shown at the \ref{fig:original}, \ref{fig:mask}, \ref{fig:maskedimage} images respectively.
+	\par Now that mask is ready, this one is applyed to the original image (figure \ref{fig:original}), the result of that operation is that the area with white pixels are shown and the area with black pixels are hidden (figure \ref{fig:maskedimage}).
+
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/original}
@@ -123,15 +126,8 @@ The main idea behind it is to subtract the low frequencies components from the i
 
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/mask}
-		\caption{Image mask generated}
-		\label{fig:mask}
-	\end{figure}
-
-	\begin{figure}[h]
-		\centering
 		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/maskedImage}
-		\caption{Imagem with mask}
+		\caption{Image with mask}
 		\label{fig:maskedimage}
 	\end{figure}
 \section{Segmentation}

@@ -11,17 +11,7 @@ function [maskedRgbImage, mask] = generateMaskedImage(image)
 	[rows, columns]= size(maskedRgbImage);
     
 	disp('Filtrando Imagens...');
-        %ch1= maskedRgbImage(:, :, 1); ch2= maskedRgbImage(:, :, 2); ch3= maskedRgbImage(:, :, 3);
-        %black_pixels= ch1==0 & ch2==0 &ch3==0;
-        %ch1(black_pixels)= 255; ch2(black_pixels)= 255; ch3(black_pixels)= 255; 
-        %maskedRgbImage= cat(3, ch1, ch2, ch3);
-	%for i=1: rows
-	%  for j=1: columns
-	%  if maskedRgbImage(i,j)==0
-	%    maskedRgbImage(i,j)= 255;
-	%  end
-	% end
-	%end
+
 	%% Subroutines definitions
 	function [mask] = generateMask(hiFreqImage, blurred)
 		imSubtration = hiFreqImage - blurred;
@@ -29,7 +19,7 @@ function [maskedRgbImage, mask] = generateMaskedImage(image)
 		% Binarize with Otsu
 		binarized = imbinarize(imSubtration, graythresh(imSubtration));
 			
-		% Morphologiacal operations for noise removal
+		% Morphological operations for noise removal
 		se = strel ('disk',3);
 		eroded = imerode(binarized,se);
 		se = strel('disk',5);
