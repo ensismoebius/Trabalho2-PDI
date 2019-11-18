@@ -101,12 +101,39 @@ The dataset used in this work is composed by 50 images of breast cells, being th
 
 \section{Filtering: Frequency Domain}
 The main objective of this section is separate from the noisy background the interesting areas, so the classifiers do not need to evaluate irrelevant data.
-The main idea behind it is to subtract the low frequencies components from image and, using morphological operations, remove remaining noises and close the gaps.
+The main idea behind it is to subtract the low frequencies components from the image and, using morphological operations, remove remaining noises and close the gaps.
 \subsection{Filtering}
-Two kinds of filters were used:\\
-A low pass filter witch is used do highlight the low frequencies features of the image.In this specific case, the radius used was 60 pixels.
+	Two kinds of filters were used:\\
+	\par A low pass filter witch is used to highlight the low frequencies features of the image. In this specific case, the radius used was empirically determined to be 50 pixels.
+	
+	\par And a high pass filter to enhance the detailed information at the image. The radius chosen this time is one.
+	
+	\par To get the mask a simple subtraction operation of grayscaled lowpass filtered image from highpass filtered image is made.
 
+	\par On the resulted image, Otsu thresholding
+	operation is applied followed by two morphological operations: An erosion using a circle mask of three pixels and dilation using a circle mask of 5 pixels, these values were empirically chosen to get rid of noisy information in the image.
+	
+	\par The original image, the mask, and the final masked image are shown at the \ref{fig:original}, \ref{fig:mask}, \ref{fig:maskedimage} images respectively.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/original}
+		\caption{Original image}
+		\label{fig:original}
+	\end{figure}
 
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/mask}
+		\caption{Image mask generated}
+		\label{fig:mask}
+	\end{figure}
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.7\linewidth]{images/fourrierFiltering/maskedImage}
+		\caption{Imagem with mask}
+		\label{fig:maskedimage}
+	\end{figure}
 \section{Segmentation}
 The segmentation is an important step within the image processing, which is responsible for subdividing the an image in regions or objects that compose the signal \cite{Gonzalez:2006:DIP:1076432}, usually, this process is made through the separation of the image between background and object. Several techniques can be used in this process, such as based on thresholding, edge detection, region approaches. In this work, the optimal thresholding technique called Otsu was chosen due to its simplicity and good results. The segmentation was made after the filtering step, and the approach taken in the present work is to subtract the background of the segmented image from the original gray levels image. The code responsible for doing this task and the result produced in the image are shown in the Figure 4.
 
@@ -114,7 +141,7 @@ The segmentation is an important step within the image processing, which is resp
     \centering
     \includegraphics[width=8cm]{images/imagem_segmentacao.png}
     \caption{Segmentation of an Image of Malignant Tumor}
-    \label{fig:my_label}
+    \label{fig:imagem_segmentacao}
 \end{figure}
 
 Although visually is difficult to realize differences between the original image and the segmented one, was checked during the tests that for this image 223 682 pixels were modified in the resulted image in comparison with the original one. Since the dataset is composed for images of resolution 896x768, this quantity of modified pixels achieve around 32\% of the total.\par
