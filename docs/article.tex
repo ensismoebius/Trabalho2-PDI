@@ -24,6 +24,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 
+
 % The code style
 \usepackage{color}
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -116,7 +117,7 @@ The main idea behind it is to subtract the low frequencies components from the i
 		\label{fig:mask}
 	\end{figure}
 
-	\par Now that mask is ready, this one is applyed to the original image (figure \ref{fig:original}), the result of that operation is that the area with white pixels are shown and the area with black pixels are hidden (figure \ref{fig:maskedimage}).
+	\par Now that mask is ready, this one is applied to the original image (figure \ref{fig:original}), the result of that operation is that the area with white pixels are shown and the area with black pixels are hidden (figure \ref{fig:maskedimage}).
 
 	\begin{figure}[h]
 		\centering
@@ -147,14 +148,52 @@ The main idea behind it is to subtract the low frequencies components from the i
 Taking this in consideration, in the next sections is presented some measures of classification for segmented and non segmented images, in order to determine the importance and necessity of this step in the whole process.
 
 \section{Feature Extraction}
-lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, 
+The Feature Extraction can be considered as one of the most important steps in Image Processing: this is the last phase before the classification of the samples. So, the main objective here is to compose feature vectors capable to describe the samples, in order to classify correctly each example in its real class.\par
+Commonly, two approaches can be chosen in order to extract descriptors from an image: Handcrafted Features and Non-Handcrafted ones. The Handcrafted Features, as the name claims, are the descriptors extracted manually, according to choice of the developer, while the Non-Handcrafted Features are extracted in an automatic way, in order to do the best possible classification (one example of this approach are the Convolutional Neural Networks - CNN). \par
+As mentioned in the title of this paper, the used approach for extracting the descriptors from the histopathological images was the handcrafted one, where 11 descriptors were extracted and used as the input of the classifiers. It is important to remember that the extraction was accomplished from segmented images and non-segmented ones, so, it is possible to compare the impact of the segmentation step during the classification. Below is presented the extracted features used in the process.\par
+The descriptors used in the present process can be divided into 3 categories: First Order Measures, Second Order Measures and Others. The First Order Measures are the descriptors that consider just the gray level information about the pixels, not considering the spatial relation among them. The Second Order Measures, instead of the first ones, consider the spatial relation among the pixels, beyond the gray level property. These descriptors are extracted from the called Gray Level Co-occurrence Matrix (GLCM), that is responsible to store the frequency that a pixel with gray level \textbf{i} and other with gray level \textbf{j} occur in the image, separated for a distance \textbf{d}, in the direction\textbf{ $\theta$} \cite{conci2008computacao}. This method was proposed in 1973 by \cite{haralick:smc1973}, and the descriptors extracted from the GLCM are called Haralick descriptors (in the present work 6 of the 14 descriptors proposed by Haralick were used).\par
+The Others Group mentioned in the paragraph above includes the descriptors that do not fit the First and Second Measures, so, becomes important to explain how these descriptors were extracted in the proposed method. Three descriptors can be found in this last group: Fourier Descriptors, Local Binary Pattern Features and Fractal Dimension Descriptors. \par
+The Fourier Descriptors (FD), as the name say, are the features extracted from the Fourier Transform, that is responsible to transform the visualization of the signal from the spatial domain to the frequency domain, in order to become possible to see the frequencies that compose the image. Different approaches can be chosen to extract the FD`s, in the present work the proposed process was as follows:
+\begin{itemize}
+    \item The image was transformed to the frequency domain with the Fast Fourier Transform (FFT).
+    \item Without doing the shift of the transformed, a number of N coefficients in the middle of the spectrum were taken, so just the high frequencies was caught from the FFT. Doing this process, it is possible to reconstruct the image just with these high frequencies coefficients, that represent the edges inside the signal. In the Figure 8 it is possible to see the original image and the reconstructed one made from the descriptors.
+    \item Lastly, the complex magnitude was computed for the coefficients.
+\end{itemize}{}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{images/imagem_reconstrucao.png}
+    \caption{Original Image and its reconstruction using the Fourier Descriptors}
+    \label{fig:my_label}
+\end{figure}{}
+The Local Binary Pattern Features (LBP) was described in \cite{lbp-OjalaPH96}, being a two-level version of the Texture Unit model proposed by \cite{Wang:1990:TCU:83597.83606}. The main idea is describe the image considering a neighborhood of 3x3 pixels and comparing the gray levels.\par
+The Fractal Dimension Descriptors extracted in the present work were obtained using the Box Counting Theorem, a method where the image is divided into N windows second a certain scale and the number of boxes that contains objects are counted. Doing this, it is possible to obtain the Fractal Dimension from each scale, as well as a General one calculated through the angular coefficient.\par
+The Figure 9 summarizes the descriptors obtained in the present work. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8.5cm]{images/table_descriptors.png}
+    \caption{Descriptors}
+    \label{fig:my_label}
+\end{figure}{}
 
 \section{Feature Selection}
-lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, 
+The feature vector composed in the last step is formed by all descriptors presented in Figure 9, but it is not a good idea providing the feature vectors with all attributes as input to the classifiers, because the probability of the classification does not achieve good results is large doing the process in this way. This can be explained from the problem so-called "Curse of Dimensionality": after a certain number of descriptors, increasing the length of the feature vector with more attributes can degrade the performance of the classifiers.\par
+In order to obtain the more relevant descriptors and the best number of attributes, the feature vector with 7175 descriptors was examined by the ReliefF method, which is responsible for ranking the importance of the predictors based on its capability of distinguishing samples of different classes. The next section presents the analysis made by the ReliefF, taking into consideration the performance of the classifiers.
+
 
 \section{Classification}
-lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, 
+The relevance of the descriptors, as well the performance of the classifiers were measured by the analysis of ROC Curve and area under curve ROC (AUC). This measures were used in the proposed method because the malignant an benign classes are unbalanced in dataset, being that there are 24 malignant samples and 26 benign ones. Taking this is consideration, it is not a good idea analysing the obtained results through measures as accuracy, because the calculation of this last measure does not take the class balancing into consideration.\par
+The ROC Curve and AUC allow to analyse the performance of the classifiers through the confusion matrix obtained varying the threshold, so the plotted graph is formed by the X axis (1 - Specificity) and Y (Sensitivity), therefore, the AUC with value equals to 1 represents a perfect classification, while an AUC equals to 0.5 or less represents a random classification.\par
+The performance of the proposed method was evaluated through the classifiers \textbf{Discriminant Analysis}, \textbf{Decision Tree} and \textbf{Naive Bayes}, taking into consideration that all of these classifiers were submitted to the K-Folds validation method, with K equals to 5.\par
+The best number of descriptors found by testing the classifiers used in the present method can be seen in the Figure 10, which shows the number of descriptors used for the classification in X axis, and the average rates for AUC in the Y axis.\par
+It is important to remember that the graph contained in the Figure 10 was obtained using the segmented images in the process; the best number of descriptors obtained (35) was also tested in the same process without the segmentation step, in order to determine the importance of this phase in the whole process. The AUC rates obtained for the Discriminant Analysis, Decision Tree and Naive Bayes were 0.83, 0.66 and 0.75 respectively, resulting in an average of 0.746, well below the value showed in the graph (0.823). This information show us that the segmentation step produces a significant improvement in the performance of the classifiers, being necessary use its during the proposed method.
 
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=18.3cm]{images/chart.png}
+    \caption{Average rates for AUC varying the number of descriptors taking into consideration the classifiers: Decision Tree, Discriminant Analysis and Naive Bayes}
+    \label{fig:my_label}
+\end{figure*}{}
 
 \section{Results}
 lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, 
