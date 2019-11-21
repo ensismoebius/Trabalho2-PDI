@@ -53,9 +53,23 @@ for x=1: length(feature_matrix)
     end
 end    
 
-%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree');
 disp('FINALIZADO - RESULTADOS----------------------------------------------');
+
+%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis');
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
 plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
+
+%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree');
+fprintf('Acurácia média de classificação: %f\n', accuracy);
+%plotting the returned confusion matrix 
+plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
+
+%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes');
+fprintf('Acurácia média de classificação: %f\n', accuracy);
+%plotting the returned confusion matrix 
+plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
+
