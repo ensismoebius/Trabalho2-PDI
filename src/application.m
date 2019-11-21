@@ -1,6 +1,6 @@
 %calling the function for reading the folder of images
-maligna_images= image_reader('D:\Hiago\Acadêmico\PÓS GRADUAÇÃO\Disciplinas\2º SEMESTRE - 2019\Processamento de Imagens Digitais\Trabalhos\Aplicação (Artigo)\Roi_Recort_bisque_Maligna');
-benigna_images= image_reader('D:\Hiago\Acadêmico\PÓS GRADUAÇÃO\Disciplinas\2º SEMESTRE - 2019\Processamento de Imagens Digitais\Trabalhos\Aplicação (Artigo)\Roi_Recort_bisque_Benigna');
+maligna_images= image_reader('.\samples\Roi_Recort_bisque_Maligna');
+benigna_images= image_reader('.\samples\Roi_Recort_bisque_Benigna');
 
 %filtering the images (choose % of the total) -- 1 == all images
 maligna_images= filtering_images(maligna_images, 1);
