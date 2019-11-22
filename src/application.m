@@ -72,4 +72,3 @@ plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
 plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
-

@@ -1,7 +1,7 @@
 function []= plot_result_matrix(input_matrix, input_labels)
 
     [rows, columns]= size(input_matrix);
-    figure(2); imagesc(input_matrix); title('Matriz de Confusão'); xlabel('Predicted Class'); ylabel('True Class');
+    figure; imagesc(input_matrix); title('Matriz de Confusão'); xlabel('Predicted Class'); ylabel('True Class');
     set(gca, 'XTick', 1:rows, 'XTickLabel', input_labels, 'YTick', 1:columns, 'YTickLabel', input_labels);
     for ii= 1: rows
         for jj=1: columns

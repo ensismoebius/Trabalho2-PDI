@@ -46,7 +46,7 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
     average_AUC= mean(AUCroc_per_fold);
 
     %plotting the graph of ROC Curves
-    figure(1); plot(intervals, mean_curve, 'Color', 'Black', 'LineWidth', 3.0); 
+    figure; plot(intervals, mean_curve, 'Color', 'Black', 'LineWidth', 3.0); 
     legends{k+1}= sprintf('AUC média dos folds = %.2f', average_AUC);
     xlabel('1 - Especificidade'); ylabel('Sensibilidade'); title(strcat('Curva ROC: ', classifier)); 
     legend(legends, 'Location', 'SE');
