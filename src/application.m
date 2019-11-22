@@ -43,7 +43,7 @@ end
 %calling RELIEF for ranking the most important descriptors
 [rank, weights]= relieff(feature_matrix, label_matrix, 10);
 %selecting the first X better descriptors
-number_of_descriptors=30; 
+number_of_descriptors=35; 
 cutted_feature_matrix= zeros(rows, number_of_descriptors);
 idx_best_descriptors=1;
 for x=1: length(feature_matrix)
