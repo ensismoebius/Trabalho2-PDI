@@ -30,6 +30,8 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
 		%ROC Curve and AUC (plotting the ROC Curve for each fold and an average of the folds)
 		[Xroc, Yroc, ~, AUCroc_per_fold(i)]= perfcurve(label_matrix(idx_test, :), scores(:, 1), 'maligna');
 		
+		hold on;
+		
 		if plotIt
 			plot(Xroc, Yroc, 'LineWidth', 1.5); legends{i}= sprintf('fold %d (AUC = %.2f)', i, AUCroc_per_fold(i));
 		end
@@ -49,11 +51,11 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
 	
 	%plotting the graph of ROC Curves
 	if plotIt
-		hold on;
-		figure; plotIt(intervals, mean_curve, 'Color', 'Black', 'LineWidth', 3.0);
+		plot(intervals, mean_curve, 'Color', 'Black', 'LineWidth', 3.0);
 		legends = sprintf('Average folds AUC= %.2f', average_AUC);
 		xlabel('1 - Specificity'); ylabel('Sensitivity'); title(strcat('ROC curve: ', classifier));
 		legend(legends, 'Location', 'SE');
-		hold off;
 	end
+	
+	hold off;
 end
