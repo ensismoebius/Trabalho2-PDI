@@ -49,8 +49,6 @@ xlabels = zeros(40,1);
 % The data for the final graphic
 results = zeros(40,4);
 
-[accuracy01, accuracy02, accuracy03, average] = classificationTests(feature_matrix, label_matrix, 6, kfoldsAmount, amountOfImages, true);
-
 % Evaluate data for each amount of descriptors from 1 up to 40
 for number_of_descriptors=1: 40
 	[accuracy01, accuracy02, accuracy03, average] = classificationTests(feature_matrix, label_matrix, number_of_descriptors, kfoldsAmount, amountOfImages, false);
