@@ -1,4 +1,4 @@
-function [average_accuracy, total_confusion_matrix]= classification_Kfolds(feature_vectors_matrix, label_matrix, classifier, kfoldsAmount)
+function [average_accuracy, total_confusion_matrix]= classification_Kfolds(feature_vectors_matrix, label_matrix, classifier, kfolds, kfoldsAmount)
 %validation of the classifiers using the K-FOLDS method
 
 	accuracy_per_fold= zeros(1, kfoldsAmount); total_confusion_matrix= zeros(2, 2); AUCroc_per_fold= zeros(1, kfoldsAmount);

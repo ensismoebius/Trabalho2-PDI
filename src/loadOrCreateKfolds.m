@@ -5,6 +5,11 @@ function [ kfolds ] = loadOrCreateKfolds( amount )
 	if exist('kfold.mat', 'file')
 		file = load('kfold.mat','kfolds');
 		kfolds= file.kfolds;
+		
+		if max(kfolds) < amount
+			kfolds= crossvalind('kfold', label_matrix, k); %creating the indices of the folds
+			save('kfold.mat','kfolds');	
+		end
 	else
 		kfolds= crossvalind('kfold', label_matrix, k); %creating the indices of the folds
 		save('kfold.mat','kfolds');
