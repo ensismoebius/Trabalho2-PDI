@@ -1,3 +1,4 @@
+% If you want a new kfold separation delete the "kfold.mat" file
 kfoldsAmount=5;
 
 %calling the function for reading the folder of images
@@ -26,9 +27,9 @@ label_matrix= cell(50,1);
 %matrix of caracteristics of all images - the next two lines are just for allocation
 formatted_feature_vector= cell2mat(feature_extractor(gray_maligna_images{1})); %just for getting the length
 feature_matrix= zeros(length(maligna_images)+length(benigna_images), length(formatted_feature_vector));
-[rows, columns]= size(feature_matrix); idx_bng=1;
-for i=1: rows
-	fprintf('Extraindo características: Fase %d de %d...\n', i, rows);
+[amountOfImages, columns]= size(feature_matrix); idx_bng=1;
+for i=1: amountOfImages
+	fprintf('Extraindo características: Fase %d de %d...\n', i, amountOfImages);
 	if i < (length(maligna_images)+1) %here I can choose if I want to extract from original gray images or segmented ones
 		feature_vector= feature_extractor(segmented_maligna_images{i});% <-
 		formatted_feature_vector= cell2mat(feature_vector);
@@ -42,41 +43,24 @@ for i=1: rows
 		label_matrix{i}= 'benigna';
 	end
 end
+% The labels for final graphic
+xlabels = zeros(40,1);
 
-fprintf('Selecionando o melhor grupo de características\n');
-%calling RELIEF for ranking the most important descriptors
-[rank, weights]= relieff(feature_matrix, label_matrix, 10);
-%selecting the first X better descriptors
-number_of_descriptors=35;
-cutted_feature_matrix= zeros(rows, number_of_descriptors);
-idx_best_descriptors=1;
-for x=1: length(feature_matrix)
-	if(rank(x))<= number_of_descriptors
-		cutted_feature_matrix(1:50, idx_best_descriptors)= feature_matrix(1:50, x);
-		idx_best_descriptors= idx_best_descriptors+1;
-	end
+% The data for the final graphic
+results = zeros(40,4);
+
+[accuracy01, accuracy02, accuracy03, average] = classificationTests(feature_matrix, label_matrix, 6, kfoldsAmount, amountOfImages, true);
+
+% Evaluate data for each amount of descriptors from 1 up to 40
+for number_of_descriptors=1: 40
+	[accuracy01, accuracy02, accuracy03, average] = classificationTests(feature_matrix, label_matrix, number_of_descriptors, kfoldsAmount, amountOfImages, false);
+	
+	results(number_of_descriptors,:)=[accuracy01, accuracy02, accuracy03, average];
+	xlabels(number_of_descriptors,:) = number_of_descriptors;
 end
 
-disp('FINALIZADO - RESULTADOS----------------------------------------------');
+% Show the final results
+plotFinalResults(xlabels, results);
 
-% Loads the kfold separation previously generated just for the sake of reproducibility.
-% If you want a new kfold separation delete the "kfold.mat" file
-kfolds = loadOrCreateKfolds(kfoldsAmount, label_matrix);
 
-%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis', kfolds, kfoldsAmount);
-fprintf('Acurácia média de classificação: %f\n', accuracy);
-%plotting the returned confusion matrix
-plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
 
-%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree', kfolds, kfoldsAmount);
-fprintf('Acurácia média de classificação: %f\n', accuracy);
-%plotting the returned confusion matrix
-plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
-
-%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes', kfolds, kfoldsAmount);
-fprintf('Acurácia média de classificação: %f\n', accuracy);
-%plotting the returned confusion matrix
-plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
