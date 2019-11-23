@@ -1,4 +1,4 @@
-function [accuracy01, accuracy02, accuracy03, average] = classificationTests( feature_matrix, label_matrix, number_of_descriptors, kfoldsAmount, amountOfImages, plot )
+function [accuracy01, accuracy02, accuracy03, average] = classificationTests( feature_matrix, label_matrix, number_of_descriptors, kfoldsAmount, amountOfImages, plotIt )
 	%CLASSIFICATIONTESTS Summary of this function goes here
 	%   Detailed explanation goes here
 	fprintf('Selecionando o melhor grupo de características\n');
@@ -20,26 +20,26 @@ function [accuracy01, accuracy02, accuracy03, average] = classificationTests( fe
 	kfolds = loadOrCreateKfolds(kfoldsAmount, label_matrix);
 	
 	%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-	[accuracy01, matrix_of_conf01]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis', kfolds, kfoldsAmount, plot);
+	[accuracy01, matrix_of_conf01]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis', kfolds, kfoldsAmount, plotIt);
 	fprintf('Acurácia média de classificação para discrim_analysis:\t %f\n', accuracy01);
 	%plotting the returned confusion matrix
-	if plot
+	if plotIt
 		plot_result_matrix(matrix_of_conf01, {'Maligna', 'Benigna'});
 	end
 	
 	%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-	[accuracy02, matrix_of_conf02]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree', kfolds, kfoldsAmount, plot);
+	[accuracy02, matrix_of_conf02]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree', kfolds, kfoldsAmount, plotIt);
 	fprintf('Acurácia média de classificação para decision_tree:\t %f\n', accuracy02);
 	%plotting the returned confusion matrix
-	if plot
+	if plotIt
 		plot_result_matrix(matrix_of_conf02, {'Maligna', 'Benigna'});
 	end
 	
 	%do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-	[accuracy03, matrix_of_conf03]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes', kfolds, kfoldsAmount, plot);
+	[accuracy03, matrix_of_conf03]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes', kfolds, kfoldsAmount, plotIt);
 	fprintf('Acurácia média de classificação para naive_bayes:\t %f\n', accuracy03);
 	%plotting the returned confusion matrix
-	if plot
+	if plotIt
 		plot_result_matrix(matrix_of_conf03, {'Maligna', 'Benigna'});
 	end
 	
