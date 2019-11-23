@@ -1,16 +1,17 @@
-function [average_accuracy, total_confusion_matrix]= classification_Kfolds(feature_vectors_matrix, label_matrix, classifier)
+function [average_accuracy, total_confusion_matrix]= classification_Kfolds(feature_vectors_matrix, label_matrix, classifier, kfolds)
 %validation of the classifiers using the K-FOLDS method
 
-    k=5;
-    indexes= crossvalind('kfold', label_matrix, k); %creating the indices of the folds
-    accuracy_per_fold= zeros(1, k); total_confusion_matrix= zeros(2, 2); AUCroc_per_fold= zeros(1, k);
+	k= size(kfolds); 
+	k=k(1);
+	
+	accuracy_per_fold= zeros(1, k); total_confusion_matrix= zeros(2, 2); AUCroc_per_fold= zeros(1, k);
     %for ROC Curves and Average ROC Curve
     legends= cell(1, k+1);  intervals= linspace(0, 1, 100);  
     
     %beginning of the loop for folds
     for i=1: k
-       idx_test= (indexes==i);
-       idx_train= (indexes~=i);
+       idx_test= (kfolds==i);
+       idx_train= (kfolds~=i);
        classes_of_test= label_matrix(idx_test, :); %for comparating with the response of the classifier
        
        %here I am training the classifier 

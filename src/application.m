@@ -54,21 +54,42 @@ for x=1: length(feature_matrix)
 end    
 
 disp('FINALIZADO - RESULTADOS----------------------------------------------');
+%loads the kfold separation previously generated just for the sake of reproducibility
+%if you want a new kfold separation delete the "kfold.mat" file
+k=5;
+kfolds=0;
+
+if exist('kfold.mat', 'file')
+	file = load('kfold.mat','kfolds');
+	kfolds= file.kfolds;
+else
+	kfolds= crossvalind('kfold', label_matrix, k); %creating the indices of the folds
+	save('kfold.mat','kfolds');
+end
+
+
+
+
+
+
+
+
+
 
 %do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis');
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis', kfolds);
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
 plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
 
 %do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree');
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'decision_tree', kfolds);
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
 plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
 
 %do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
-[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes');
+[accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'naive_bayes', kfolds);
 fprintf('Acurácia média de classificação: %f\n', accuracy);
 %plotting the returned confusion matrix 
 plot_result_matrix(matrix_of_conf, {'Maligna', 'Benigna'});
