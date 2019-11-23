@@ -1,15 +1,15 @@
-function [average_accuracy, total_confusion_matrix]= classification_Kfolds(feature_vectors_matrix, label_matrix, classifier, kfolds)
+function [average_accuracy, total_confusion_matrix]= classification_Kfolds(feature_vectors_matrix, label_matrix, classifier, kfoldsAmount)
 %validation of the classifiers using the K-FOLDS method
 
-	k= size(kfolds); 
-	k=k(1);
-	
-	accuracy_per_fold= zeros(1, k); total_confusion_matrix= zeros(2, 2); AUCroc_per_fold= zeros(1, k);
+	accuracy_per_fold= zeros(1, kfoldsAmount); total_confusion_matrix= zeros(2, 2); AUCroc_per_fold= zeros(1, kfoldsAmount);
     %for ROC Curves and Average ROC Curve
-    legends= cell(1, k+1);  intervals= linspace(0, 1, 100);  
+    legends= cell(1, kfoldsAmount+1);  intervals= linspace(0, 1, 100);  
     
     %beginning of the loop for folds
-    for i=1: k
+    for i=1: kfoldsAmount
+		
+		fprintf('Iteração: %f', i);
+		
        idx_test= (kfolds==i);
        idx_train= (kfolds~=i);
        classes_of_test= label_matrix(idx_test, :); %for comparating with the response of the classifier
@@ -36,9 +36,9 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
        %for getting an average of the ROC curves from each fold
        x_adj= adjust_unique_points(Xroc); %interp1 requires unique points
        if i==1
-           mean_curve= (interp1(x_adj, Yroc, intervals))/k; 
+           mean_curve= (interp1(x_adj, Yroc, intervals))/kfoldsAmount; 
        else
-           mean_curve= mean_curve+ (interp1(x_adj, Yroc, intervals))/k; 
+           mean_curve= mean_curve+ (interp1(x_adj, Yroc, intervals))/kfoldsAmount; 
        end
        
     end %end of the loop
@@ -48,7 +48,7 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
 
     %plotting the graph of ROC Curves
     figure; plot(intervals, mean_curve, 'Color', 'Black', 'LineWidth', 3.0); 
-    legends{k+1}= sprintf('AUC média dos folds = %.2f', average_AUC);
+    legends{kfoldsAmount+1}= sprintf('AUC média dos folds = %.2f', average_AUC);
     xlabel('1 - Especificidade'); ylabel('Sensibilidade'); title(strcat('Curva ROC: ', classifier)); 
     legend(legends, 'Location', 'SE');
     hold off;
