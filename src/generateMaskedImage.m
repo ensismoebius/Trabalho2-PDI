@@ -9,21 +9,20 @@ function [maskedRgbImage, mask] = generateMaskedImage(image)
 	%% Final result
 	maskedRgbImage = bsxfun(@times, image, cast(mask, 'like', image));
 	[rows, columns]= size(maskedRgbImage);
-    
-	disp('Filtrando Imagens...');
-
+	
 	%% Subroutines definitions
 	function [mask] = generateMask(hiFreqImage, blurred)
 		imSubtration = hiFreqImage - blurred;
 		
 		% Binarize with Otsu
 		binarized = imbinarize(imSubtration, graythresh(imSubtration));
-			
+		
 		% Morphological operations for noise removal
 		se = strel ('disk',3);
 		eroded = imerode(binarized,se);
 		se = strel('disk',5);
-		expanded = im2bw(imdilate(eroded, se), 0.5);
+		%expanded = im2bw(imdilate(eroded, se), 0.5);
+		expanded = imdilate(eroded, se);
 		
 		% Morphological operations for holes removal
 		mask = imfill(expanded,'holes');
@@ -39,12 +38,12 @@ function [maskedRgbImage, mask] = generateMaskedImage(image)
 		else
 			c=z<=radius;
 		end
-
+		
 		%% Apply filter
 		af=fftshift(fft2(image));
 		af1=af.*c;
 		result=ifft2(ifftshift(af1));
-
+		
 		%% Normalize result
 		f1=abs(result);
 		fm=max(result(:));

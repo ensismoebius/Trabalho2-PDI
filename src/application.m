@@ -1,3 +1,5 @@
+kfoldsAmount=5;
+
 %calling the function for reading the folder of images
 maligna_images= image_reader('.\samples\Roi_Recort_bisque_Maligna');
 benigna_images= image_reader('.\samples\Roi_Recort_bisque_Benigna');
@@ -26,6 +28,7 @@ formatted_feature_vector= cell2mat(feature_extractor(gray_maligna_images{1})); %
 feature_matrix= zeros(length(maligna_images)+length(benigna_images), length(formatted_feature_vector));
 [rows, columns]= size(feature_matrix); idx_bng=1;
 for i=1: rows
+	fprintf('Extraindo características: Fase %d de %d...\n', i, rows);
 	if i < (length(maligna_images)+1) %here I can choose if I want to extract from original gray images or segmented ones
 		feature_vector= feature_extractor(segmented_maligna_images{i});% <-
 		formatted_feature_vector= cell2mat(feature_vector);
@@ -40,6 +43,7 @@ for i=1: rows
 	end
 end
 
+fprintf('Selecionando o melhor grupo de características\n');
 %calling RELIEF for ranking the most important descriptors
 [rank, weights]= relieff(feature_matrix, label_matrix, 10);
 %selecting the first X better descriptors
@@ -57,8 +61,7 @@ disp('FINALIZADO - RESULTADOS----------------------------------------------');
 
 % Loads the kfold separation previously generated just for the sake of reproducibility.
 % If you want a new kfold separation delete the "kfold.mat" file
-kfoldsAmount=5;
-kfolds = loadOrCreateKfolds(kfoldsAmount);
+kfolds = loadOrCreateKfolds(kfoldsAmount, label_matrix);
 
 %do the classification with the cutted_feature_matrix - I can choose the classifier at the 3º parameter
 [accuracy, matrix_of_conf]= classification_Kfolds(cutted_feature_matrix, label_matrix, 'discrim_analysis', kfolds, kfoldsAmount);
