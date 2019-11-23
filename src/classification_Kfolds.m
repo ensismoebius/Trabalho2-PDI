@@ -58,8 +58,12 @@ function [average_accuracy, total_confusion_matrix]= classification_Kfolds(featu
 	if plotIt
 		plot(intervals, mean_curve, 'Color', 'Black', 'LineWidth', 3.0);
 		legends{i+1} = sprintf('Average folds AUC= %.2f', average_AUC);
-		xlabel('1 - Specificity'); ylabel('Sensitivity'); title(strcat('ROC curve: ', classifier));
-		legend(legends, 'Location', 'SE');
+		xlabel('1 - Specificity'); ylabel('Sensitivity');
+		title(strcat('ROC curve: ', classifier),'Interpreter', 'none');
+		try
+			legend(legends, 'Location', 'SE');
+		catch
+		end
 	end
 	
 	hold off;
