@@ -71,13 +71,13 @@ Breast Cancer, Image Processing, Diagnosis, Malignant and Benign
 \end{IEEEkeywords}
 
 \section{Introduction}
-\par Breast Cancer is a kind of malignant tumor in which cells in the breast grow out of control. In a recent survey called GLOBOCAN \cite{GLOBOCAN} published in 2018 by the IARC, can be visualized the statistics about this type of cancer around the world. The study states that the breast cancer is the second most incident type of cancer in world, with 2 088 049 cases of this disease in the last year, and the number of cases of mortality is equals to 626 679 (about 30\% of total). According to the same study, the breast cancer is the most incident type in Brazil, with 85 620 registered cases in total, and the second most reason of mortalities among the cancers, with 18 842 cases, what represents 22\% of the total cases of breast cancer in Brazil. Figures 1 and 2 in the right graph the information presented until now. In the first chart is possible to visualize the statistics about the world, and in the second one is presented the numbers of cases in Brazil.
+\par Breast Cancer is a kind of malignant tumor in which cells in the breast grow out of control. In a recent survey called GLOBOCAN \cite{GLOBOCAN} published in 2018 by the IARC, can be visualized the statistics about this type of cancer around the world. The study states that the breast cancer is the second most incident type of cancer in world, with 2 088 049 cases of this disease in the last year, and the number of cases of mortality is equals to 626 679 (about 30\% of total). According to the same study, the breast cancer is the most incident type in Brazil, with 85 620 registered cases in total, and the second most reason of mortalities among the cancers, with 18 842 cases, what represents 22\% of the total cases of breast cancer in Brazil. Figures \ref{fig:graphic2} and \ref{fig:graphic1} in the right graph the information presented until now. In the first chart is possible to visualize the statistics about the world, and in the second one is presented the numbers of cases in Brazil.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=8cm]{images/graphic1.png}
     \caption{Statistics about Incidence of types of Cancer in the World \cite{GLOBOCAN}}
-    \label{fig:my_label}
+    \label{fig:graphic1}
 \end{figure}
 
 \begin{figure}[h]
@@ -92,13 +92,13 @@ Breast Cancer, Image Processing, Diagnosis, Malignant and Benign
 \par The Digital Image Processing is the computational field responsible for dealing with this kind of task, which involves some steps for processing the image in order to achieve the better possible classification rate, in this case between malignant and benign tumors. This paper presents the steps present within of the development of an application responsible for classifying images of breast cells from features extracted, which will be described in the sequence of the paper. Some measures as accuracy, ROC Curve and AUC are compared in order to indicate the best combination of features and classifier. The rest of the paper is organized as follow:  Section II is responsible for presenting the image acquisition, while the section III demonstrates how the filtering of the images was made. Section IV presents the segmentation step, and its impact in the following phases. The step of feature extraction is presented in Section V and the feature selection in Section VI. Finishing the paper, the Section VII presents the process of classification, while Sections VIII and IX present the results and conclusion respectively.
 
 \section{Image Acquisition}
-\par The used dataset in this work is composed by 50 images of breast cells, being that 24 images are of malignant tumors and 26 of benign ones. Informations about this dataset can be found in \cite{artigo_database} and \href{https://bioimage.ucsb.edu/research/bio-segmentation}{\textbf{https://bioimage.ucsb.edu/research/bio-segmentation}}. The Figure 3 below presents a flowchart of the sequence of steps developed in the application.
+\par The used dataset in this work is composed by 50 images of breast cells, being that 24 images are of malignant tumors and 26 of benign ones. Informations about this dataset can be found in \cite{artigo_database} and \href{https://bioimage.ucsb.edu/research/bio-segmentation}{\textbf{https://bioimage.ucsb.edu/research/bio-segmentation}}. The Figure \ref{fig:imagem3} below presents a flowchart of the sequence of steps developed in the application.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=8cm]{images/imagem3.png}
     \caption{Flowchart of the developed method}
-    \label{fig:my_label}
+    \label{fig:imagem3}
 \end{figure}
 
 \section{Filtering: Frequency Domain}
@@ -133,7 +133,7 @@ The main idea behind it is to subtract the low frequencies components from the i
 		\label{fig:maskedimage}
 	\end{figure}
 \section{Segmentation}
-\par The segmentation is an important step within the image processing, which is responsible for subdividing  an image in regions or objects that compose the signal \cite{Gonzalez:2006:DIP:1076432}, usually, this process is made through the separation of the image between background and object. Several techniques can be used in this process, such as based on thresholding, edge detection, region approaches. In this work, the optimal thresholding technique called Otsu was chosen due to its simplicity and good results. The segmentation was made after the filtering step, and the approach taken in the present work is to subtract the background of the segmented image from the original gray levels image. The code responsible for doing this task and the result produced in the image are shown in the Figure 4.
+\par The segmentation is an important step within the image processing, which is responsible for subdividing  an image in regions or objects that compose the signal \cite{Gonzalez:2006:DIP:1076432}, usually, this process is made through the separation of the image between background and object. Several techniques can be used in this process, such as based on thresholding, edge detection, region approaches. In this work, the optimal thresholding technique called Otsu was chosen due to its simplicity and good results. The segmentation was made after the filtering step, and the approach taken in the present work is to subtract the background of the segmented image from the original gray levels image. The code responsible for doing this task and the result produced in the image are shown in the Figure \ref{fig:imagem_segmentacao}.
 
 \begin{figure}[h]
     \centering
@@ -156,28 +156,28 @@ The ther group mentioned in the paragraph above includes the descriptors that do
 The Fourier Descriptors (FD), as the name say, are the features extracted from the Fourier Transform, that is responsible to transform the visualization of the signal from the spatial domain to the frequency domain, in order to become possible to see the frequencies that compose the image. Different approaches can be chosen to extract the FD`s, in the present work the proposed process was as follows:
 \begin{itemize}
     \item The image was transformed to the frequency domain with the Fast Fourier Transform (FFT).
-    \item Without doing the shift of the transformed, a number of N coefficients in the middle of the spectrum were taken, so just the high frequencies was caught from the FFT. Doing this process, it is possible to reconstruct the image just with these high frequencies coefficients, that represent the edges inside the signal. In the Figure 8 it is possible to see the original image and the reconstructed one made from the descriptors.
+    \item Without doing the shift of the transformed, a number of N coefficients in the middle of the spectrum were taken, so just the high frequencies was caught from the FFT. Doing this process, it is possible to reconstruct the image just with these high frequencies coefficients, that represent the edges inside the signal. In the Figure \ref{fig:imagem_reconstrucao} it is possible to see the original image and the reconstructed one made from the descriptors.
     \item Lastly, the complex magnitude was computed for the coefficients.
-\end{itemize}{}
+\end{itemize}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=8cm]{images/imagem_reconstrucao.png}
     \caption{Original Image and its reconstruction using the Fourier Descriptors}
-    \label{fig:my_label}
-\end{figure}{}
+    \label{fig:imagem_reconstrucao}
+\end{figure}
 The Local Binary Pattern Features (LBP) was described in \cite{lbp-OjalaPH96}, being a two-level version of the Texture Unit model proposed by \cite{Wang:1990:TCU:83597.83606}. The main idea is describe the image considering a neighborhood of 3x3 pixels and comparing the gray levels.\par
 The Fractal Dimension Descriptors extracted in the present work were obtained using the Box Counting Theorem, a method where the image is divided into N windows according to a certain scale and the number of boxes that contains the objects that must be counted. Doing this, it is possible to obtain the Fractal Dimension from each scale, as well as a General one calculated through the angular coefficient.\par
-The Figure 9 summarizes the descriptors obtained in the present work. 
+The Figure \ref{fig:table_descriptors} summarizes the descriptors obtained in the present work. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=8.5cm]{images/table_descriptors.png}
-    \caption{Descriptors}
-    \label{fig:my_label}
-\end{figure}{}
+    \caption{Descriptors.}
+    \label{fig:table_descriptors}
+\end{figure}
 
 \section{Feature Selection}
-The feature vector composed in the last step is formed by all descriptors presented in Figure 9, but it is not a good idea providing the feature vectors with all attributes as input to the classifiers, because the probability of the classification does not achieve good results is large doing the process in this way. This can be explained from the problem so-called "Curse of Dimensionality": after a certain number of descriptors, increasing the length of the feature vector with more attributes can degrade the performance of the classifiers.\par
+The feature vector composed in the last step is formed by all descriptors presented in Figure \ref{fig:table_descriptors}, but it is not a good idea providing the feature vectors with all attributes as input to the classifiers, because the probability of the classification does not achieve good results is large doing the process in this way. This can be explained from the problem so-called "Curse of Dimensionality": after a certain number of descriptors, increasing the length of the feature vector with more attributes can degrade the performance of the classifiers.\par
 In order to obtain the more relevant descriptors and the best number of attributes, the feature vector with 7175 descriptors was examined by the ReliefF method, which is responsible for ranking the importance of the predictors based on its capability of distinguishing samples of different classes. The next section presents the analysis made by the ReliefF, taking into consideration the performance of the classifiers.
 
 
@@ -185,19 +185,19 @@ In order to obtain the more relevant descriptors and the best number of attribut
 The relevance of the descriptors, as well the performance of the classifiers were measured by the analysis of ROC Curve and area under curve ROC (AUC). This measures were used in the proposed method because the malignant an benign classes are unbalanced in dataset, considering that there are 24 malignant samples and 26 benign ones. Taking this is consideration, it is not a good idea analysing the obtained results through measures as accuracy, because the calculation of this last measure does not take the class balancing into consideration.\par
 The ROC Curve and AUC allow to analyse the performance of the classifiers through the confusion matrix obtained varying the threshold, so the plotted graph is formed by the X axis (1 - Specificity) and Y (Sensitivity), therefore, the AUC with value equals to 1 represents a perfect classification, while an AUC equals to 0.5 or less represents a random classification.\par
 The performance of the proposed method was evaluated through the classifiers \textbf{Discriminant Analysis}, \textbf{Decision Tree} and \textbf{Naive Bayes}, taking into consideration that all of these classifiers were submitted to the K-Folds validation method, with K equals to 5.\par
-The best number of descriptors found by testing the classifiers used in the present method can be seen in the Figure 10, which shows the number of descriptors used for the classification in X axis, and the average rates for AUC in the Y axis.\par
-It is important to remember that the graph contained in the Figure 10 was obtained using the segmented images in the process; the best number of descriptors obtained (35) was also tested in the same process without the segmentation step, in order to determine the importance of this phase in the whole process. The AUC rates obtained for the Discriminant Analysis, Decision Tree and Naive Bayes were 0.83, 0.66 and 0.75 respectively, resulting in an average of 0.746, well below the value showed in the graph (0.823). This information show us that the segmentation step produces a significant improvement in the performance of the classifiers, being necessary use its during the proposed method.
+The best number of descriptors found by testing the classifiers used in the present method can be seen in the Figure \ref{fig:finalResults}, which shows the number of descriptors used for the classification in X axis, and the average rates for AUC in the Y axis.\par
+It is important to remember that the graph contained in the Figure \ref{fig:finalResults} was obtained using the segmented images in the process; \textbf{six} was the best number of descriptors obtained, this number was also tested in the same process without the segmentation step, in order to determine the importance of this phase in the whole process. The AUC rates obtained for the Discriminant Analysis, Decision Tree and Naive Bayes were 0.83, 0.66 and 0.75 respectively, resulting in an average of 0.746, well below the value showed in the graph (0.82). This information show us that the segmentation step produces a significant improvement in the performance of the classifiers, being necessary use its during the proposed method.
 
-\begin{figure*}[h]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=18.3cm]{images/chart.png}
+    \includegraphics[width=18.3cm]{images/results/finalResults.pdf}
     \caption{Average rates for AUC varying the number of descriptors taking into consideration the classifiers: Decision Tree, Discriminant Analysis and Naive Bayes}
-    \label{fig:my_label}
-\end{figure*}{}
+    \label{fig:finalResults}
+\end{figure}
 
 \section{Results}
+\par Like was shown in the previous section
 
-lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, 
 
 \section{Conclusion}
 lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, lorem ipsum, 
